@@ -18,15 +18,14 @@ import java.util.UUID;
 
 public class ERS_Reimbursement {
     //datafields
-    private UUID reimb_id;
+    private String reimb_id;
     private BigDecimal amount;
     private Timestamp submitted;
     private Timestamp resolved;
     private String description;
-    private Blob receipt;     //using string as a temporay placeholder until a matching datatype is found.
     private String payment_id;
-    private UUID author_id;
-    private UUID resolver_id;
+    private String author_id;
+    private String resolver_id;
     private String status_id;
     private String type_id;
 
@@ -34,13 +33,12 @@ public class ERS_Reimbursement {
 
     public ERS_Reimbursement() {}
 
-    public ERS_Reimbursement(UUID reimb_id, BigDecimal amount, Timestamp submitted, Timestamp resolved, String description, Blob receipt, String payment_id, UUID author_id, UUID resolver_id, String status_id, String type_id) {
+    public ERS_Reimbursement(String reimb_id, BigDecimal amount, Timestamp submitted, Timestamp resolved, String description, String payment_id, String author_id, String resolver_id, String status_id, String type_id) {
         this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
-        this.receipt = receipt;
         this.payment_id = payment_id;
         this.author_id = author_id;
         this.resolver_id = resolver_id;
@@ -48,23 +46,11 @@ public class ERS_Reimbursement {
         this.type_id = type_id;
     }
 
-    public ERS_Reimbursement(UUID reimb_id, BigDecimal amount, Timestamp submitted, Object o, String description, Blob receipt, String payment_id, String type_id) {
-        this.reimb_id = reimb_id;
-        this.amount = amount;
-        this.submitted = submitted;
-        this.description = description;
-        this.receipt = receipt;
-        this.payment_id = payment_id;
-        this.type_id = type_id;
-
-    }
-
-    //getters and setters
-    public UUID getReimb_id() {
+    public String getReimb_id() {
         return reimb_id;
     }
 
-    public void setReimb_id(UUID reimb_id) {
+    public void setReimb_id(String reimb_id) {
         this.reimb_id = reimb_id;
     }
 
@@ -100,14 +86,6 @@ public class ERS_Reimbursement {
         this.description = description;
     }
 
-    public Blob getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(Blob receipt) {
-        this.receipt = receipt;
-    }
-
     public String getPayment_id() {
         return payment_id;
     }
@@ -116,19 +94,19 @@ public class ERS_Reimbursement {
         this.payment_id = payment_id;
     }
 
-    public UUID getAuthor_id() {
+    public String getAuthor_id() {
         return author_id;
     }
 
-    public void setAuthor_id(UUID author_id) {
+    public void setAuthor_id(String author_id) {
         this.author_id = author_id;
     }
 
-    public UUID getResolver_id() {
+    public String getResolver_id() {
         return resolver_id;
     }
 
-    public void setResolver_id(UUID resolver_id) {
+    public void setResolver_id(String resolver_id) {
         this.resolver_id = resolver_id;
     }
 
@@ -148,17 +126,14 @@ public class ERS_Reimbursement {
         this.type_id = type_id;
     }
 
-
-    //toString
     @Override
     public String toString() {
-        return "ERS_Reimbursments{" +
-                "reimb_Id='" + reimb_id + '\'' +
+        return "ERS_Reimbursement{" +
+                "reimb_id='" + reimb_id + '\'' +
                 ", amount=" + amount +
                 ", submitted=" + submitted +
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
-                ", receipt='" + receipt + '\'' +
                 ", payment_id='" + payment_id + '\'' +
                 ", author_id='" + author_id + '\'' +
                 ", resolver_id='" + resolver_id + '\'' +
@@ -166,6 +141,4 @@ public class ERS_Reimbursement {
                 ", type_id='" + type_id + '\'' +
                 '}';
     }
-
-
 }

@@ -24,7 +24,7 @@ public class ConnectionFactory {
     private ConnectionFactory() {
         try {
             System.out.println(System.getProperty("user.dir"));
-            props.load(new FileReader("db.properties"));
+            props.load(new FileReader("src/main/resources/db.properties"));
 
 
         } catch (IOException e) {

@@ -49,12 +49,12 @@ public class ERS_ReimbursementService {
 
         try {
             //Converting request class to model class
-            ERS_Reimbursement newReimbRequest = new ERS_Reimbursement(UUID.randomUUID(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()), null, reimbRequest.getDescription(), reimbRequest.getReceipt(), reimbRequest.getPayment_id(), UUID.fromString(reimbRequest.getAuthor_id()), null, "P", reimbRequest.getType_id());
+            ERS_Reimbursement reimbursement = new ERS_Reimbursement(UUID.randomUUID().toString(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()), null, reimbRequest.getDescription(), UUID.randomUUID().toString(), reimbRequest.getAuthor_id(), "490e0787-0fb7-44f6-a0ff-e63719f6fa38", "P", reimbRequest.getType_id());
 
             //reimbRequest.setStatus_id("PENDING_ID"); //Fill in once ids are decided.
-            reimDAO.save(newReimbRequest);
+            reimDAO.save(reimbursement);
 
-            return newReimbRequest;
+            return reimbursement;
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -71,12 +71,12 @@ public class ERS_ReimbursementService {
         return list;
     }
 
-    public void employeeUpdateReimbursement(UpdateReimbEmployeeRequest reimbUpdate) {
-        //STUB //Wondering whether to check if status is pending here or in the method that calls this one.
-        ERS_Reimbursement reimb = new ERS_Reimbursement(UUID.fromString(reimbUpdate.getReimb_id()), BigDecimal.valueOf(reimbUpdate.getAmount()), Timestamp.valueOf(LocalDateTime.now()), null, reimbUpdate.getDescription(), reimbUpdate.getReceipt(), reimbUpdate.getPayment_id(), reimbUpdate.getType_id());
-        reimDAO.update(reimb);
-
-    }
+//    public void employeeUpdateReimbursement(UpdateReimbEmployeeRequest reimbUpdate) {
+//        //STUB //Wondering whether to check if status is pending here or in the method that calls this one.
+//        ERS_Reimbursement reimb = new ERS_Reimbursement(UUID.fromString(reimbUpdate.getReimb_id()), BigDecimal.valueOf(reimbUpdate.getAmount()), Timestamp.valueOf(LocalDateTime.now()), null, reimbUpdate.getDescription(), reimbUpdate.getPayment_id(), reimbUpdate.getType_id());
+//        reimDAO.update(reimb);
+//
+//    }
 
     public void managerUpdateReimbursementStatus(UUID reimb_id, String status_id) {
         //STUB
