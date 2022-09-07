@@ -9,10 +9,11 @@ public class ERS_User {
     private String givenName;
     private String surname;
     private boolean isActive = false;
-    private String roleId = "PENDING";
+    private String roleId = "P";
 
     //Constructors
     public ERS_User() {}
+
 
     public ERS_User(String userId, String username, String email, String password, String givenName, String surname, String roleId) {
         this.userId = userId;
@@ -21,6 +22,18 @@ public class ERS_User {
         this.password = password;
         this.givenName = givenName;
         this.surname = surname;
+        this.roleId = roleId;
+    }
+
+    //Constructor for database retrieval
+    public ERS_User(String userId, String username, String email, String password, String givenName, String surname, boolean isActive, String roleId) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.givenName = givenName;
+        this.surname = surname;
+        this.isActive = isActive;
         this.roleId = roleId;
     }
 

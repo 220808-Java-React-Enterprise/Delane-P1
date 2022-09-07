@@ -26,7 +26,7 @@ public class ERS_Reimbursement {
     private Blob receipt;     //using string as a temporay placeholder until a matching datatype is found.
     private String payment_id;
     private UUID author_id;
-    private UUID resolver_id;
+    private UUID resolver_id = UUID.fromString("184ad055-6162-416c-8600-fd5977191cec");
     private String status_id;
     private String type_id;
 
@@ -57,6 +57,19 @@ public class ERS_Reimbursement {
         this.payment_id = payment_id;
         this.type_id = type_id;
 
+    }
+
+    public ERS_Reimbursement(UUID reimb_id, BigDecimal amount, Timestamp submitted, String description, String payment_id, UUID author_id, String type_id) {
+        this.reimb_id = reimb_id;
+        this.amount = amount;
+        this.submitted = submitted;
+        this.description = description;
+        this.payment_id = payment_id;
+        this.author_id = author_id;
+        this.type_id = type_id;
+    }
+
+    public ERS_Reimbursement(UUID randomUUID, BigDecimal valueOf, Timestamp valueOf1, Object o, String description, Blob receipt, String payment_id, UUID fromString, String p, String type_id) {
     }
 
     //getters and setters

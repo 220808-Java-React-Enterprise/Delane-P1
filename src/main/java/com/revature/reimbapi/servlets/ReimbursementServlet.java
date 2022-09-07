@@ -11,7 +11,6 @@ Last modified: 09/2/2022
 package com.revature.reimbapi.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.reimbapi.daos.ERS_ReimbursementDAO;
 import com.revature.reimbapi.dtos.requests.NewReimbursementRequest;
 import com.revature.reimbapi.dtos.requests.StatusChangeRequest;
 import com.revature.reimbapi.models.ERS_Reimbursement;
@@ -22,14 +21,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ReimbursementServlet extends HttpServlet {
     private final ObjectMapper objectMapper;
-
     private final ERS_ReimbursementService reimbursementService;
 
     public ReimbursementServlet(ObjectMapper objectMapper, ERS_ReimbursementService reimbursementService) {

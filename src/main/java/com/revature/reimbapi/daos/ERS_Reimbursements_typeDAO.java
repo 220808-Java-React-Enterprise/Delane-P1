@@ -11,11 +11,13 @@ Last modified: 09/2/2022
 package com.revature.reimbapi.daos;
 
 
+import com.revature.reimbapi.models.ERS_Reimbursement_type;
 import com.revature.reimbapi.utils.database.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ERS_Reimbursements_typeDAO {
@@ -28,10 +30,10 @@ public class ERS_Reimbursements_typeDAO {
         return null;
     }
 
-    public String getTypeById(String type_id) {
+    public String getTypeById(String typeId) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT type FROM ers_reimbursement_types WHERE type_id = ?");
-            ps.setString(1, type_id);
+            ps.setString(1, typeId);
 
             ResultSet rs = ps.executeQuery();
 
@@ -40,16 +42,16 @@ public class ERS_Reimbursements_typeDAO {
 
             }
 
-        } catch(Exception e) {
+        } catch(SQLException e) {
             e.printStackTrace();
 
         }
 
-        return null; //TODO: create typedoesnotexistexception
+        return null;
 
     }
 
-    public void update(Object obj) {
+    public void update(ERS_Reimbursement_type type) {
 
     }
 

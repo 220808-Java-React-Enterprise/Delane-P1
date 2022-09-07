@@ -246,11 +246,11 @@ public class ERS_ReimbursementDAO implements CrudDAO<ERS_Reimbursement> {
     }
 
     @Override
-    public void delete(UUID reimb_id) {
+    public void delete(String reimb_id) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()) {
 
             PreparedStatement ps = con.prepareStatement("DELETE FROM ers_reimbursements WHERE reimb_id = ? ");
-            ps.setString(1, String.valueOf(reimb_id));
+            ps.setString(1, reimb_id);
             ps.executeUpdate();
 
 

@@ -49,7 +49,7 @@ public class ERS_ReimbursementService {
 
         try {
             //Converting request class to model class
-            ERS_Reimbursement newReimbRequest = new ERS_Reimbursement(UUID.randomUUID(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()), null, reimbRequest.getDescription(), reimbRequest.getReceipt(), reimbRequest.getPayment_id(), UUID.fromString(reimbRequest.getAuthor_id()), null, "P", reimbRequest.getType_id());
+            ERS_Reimbursement newReimbRequest = new ERS_Reimbursement(UUID.randomUUID(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()),reimbRequest.getDescription(), reimbRequest.getPayment_id(), UUID.fromString(reimbRequest.getAuthor_id()), reimbRequest.getType_id());
 
             //reimbRequest.setStatus_id("PENDING_ID"); //Fill in once ids are decided.
             reimDAO.save(newReimbRequest);

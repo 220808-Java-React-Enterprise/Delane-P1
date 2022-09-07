@@ -9,5 +9,5 @@ public interface CrudDAO<T> {
     void save(T obj);
     List<T> getAll();
     void update(T obj);
-    void delete(UUID id);
+    void delete(String id);
 }

@@ -2,10 +2,13 @@ package com.revature.reimbapi.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.reimbapi.daos.ERS_ReimbursementDAO;
+import com.revature.reimbapi.daos.ERS_UserDAO;
 import com.revature.reimbapi.services.ERS_ReimbursementService;
+import com.revature.reimbapi.services.ERS_UserService;
+import com.revature.reimbapi.services.TokenService;
+import com.revature.reimbapi.servlets.AuthenticationServlet;
 import com.revature.reimbapi.servlets.EmployeeReimbursementsServlet;
 import com.revature.reimbapi.servlets.ReimbursementServlet;
-import com.revature.reimbapi.servlets.TestServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -22,7 +25,7 @@ public class ContextLoadListener implements ServletContextListener {
         ObjectMapper mapper = new ObjectMapper();
 
         //Second is initializing any and all servlets.
-        TestServlet testServlet = new TestServlet();
+        AuthenticationServlet authenticationServlet = new AuthenticationServlet(mapper, new TokenService(new JwtConfig()), new ERS_UserService(new ERS_UserDAO()));
         ReimbursementServlet reimbursementServlet = new ReimbursementServlet(mapper, new ERS_ReimbursementService(new ERS_ReimbursementDAO()));
         EmployeeReimbursementsServlet employeeReimbursementsServlet = new EmployeeReimbursementsServlet(mapper, new ERS_ReimbursementService(new ERS_ReimbursementDAO()));
 
@@ -30,7 +33,7 @@ public class ContextLoadListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         //Fourth is mapping the servlets?
-        context.addServlet("TestServlet", testServlet).addMapping("/test");
+        context.addServlet("AuthenticationServlet", authenticationServlet).addMapping("/user/login/auth");
         context.addServlet("EmployeeReimbursementServlet", employeeReimbursementsServlet).addMapping("/empreimb/*");
         context.addServlet("ReimbursementServlet", reimbursementServlet).addMapping("/postreimbrequest"); //temp for testing
 
