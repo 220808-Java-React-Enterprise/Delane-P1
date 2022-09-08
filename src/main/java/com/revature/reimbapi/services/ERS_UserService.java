@@ -75,7 +75,7 @@ public class ERS_UserService {
     }
 
     public boolean isValidPassword(String password) {
-        return password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
+        return password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[^\\s ].{8,}$");
     }
 
     public boolean isValidEmail(String email) {

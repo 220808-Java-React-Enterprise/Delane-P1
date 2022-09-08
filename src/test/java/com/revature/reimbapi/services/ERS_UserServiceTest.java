@@ -31,6 +31,8 @@ public class ERS_UserServiceTest extends TestCase {
     }
 
     public void testIsValidPassword() {
+        String invalidPassword = "   A        9    *   z   ";
+        Assert.assertFalse(sut.isValidPassword(invalidPassword));
     }
 
     public void testIsValidEmail() {
