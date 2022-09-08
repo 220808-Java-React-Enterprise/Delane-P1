@@ -24,8 +24,8 @@ public class ConnectionFactory {
     private ConnectionFactory() {
         try {
             System.out.println(System.getProperty("user.dir"));
-            props.load((new FileReader("src/main/resources/db.properties")));
-            //props.load(new FileReader("C:\\'Program Files'\\'Apache Software Foundation'\\'Tomcat 9.0'\\webapps\\ROOT\\db.properties"));
+            //props.load((new FileReader("src/main/resources/db.properties")));
+            props.load(new FileReader("C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\db.properties"));
 
 
         } catch (IOException e) {

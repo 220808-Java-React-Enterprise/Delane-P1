@@ -27,7 +27,7 @@ public class ERS_Reimbursement {
     private String payment_id;
     private UUID author_id;
     private UUID resolver_id = UUID.fromString("184ad055-6162-416c-8600-fd5977191cec");
-    private String status_id;
+    private String status_id = "P";
     private String type_id;
 
     //constructors

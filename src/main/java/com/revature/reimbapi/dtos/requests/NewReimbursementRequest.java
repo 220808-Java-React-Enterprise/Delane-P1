@@ -6,20 +6,16 @@ import java.sql.Blob;
 public class NewReimbursementRequest {
     private Double amount;
     private String description;
-    private Blob  receipt;
     private String payment_id;
-    private String author_id;
     private String type_id;
 
     public NewReimbursementRequest() {
     }
 
-    public NewReimbursementRequest(Double amount, String description, Blob receipt, String payment_id, String author_id, String type_id) {
+    public NewReimbursementRequest(Double amount, String description, String payment_id, String type_id) {
         this.amount = amount;
         this.description = description;
-        this.receipt = receipt;
         this.payment_id = payment_id;
-        this.author_id = author_id;
         this.type_id = type_id;
     }
 
@@ -45,14 +41,6 @@ public class NewReimbursementRequest {
         this.description = description;
     }
 
-    public Blob getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(Blob receipt) {
-        this.receipt = receipt;
-    }
-
     public String getPayment_id() {
         return payment_id;
     }
@@ -61,13 +49,6 @@ public class NewReimbursementRequest {
         this.payment_id = payment_id;
     }
 
-    public String getAuthor_id() {
-        return author_id;
-    }
-
-    public void setAuthor_id(String author_id) {
-        this.author_id = author_id;
-    }
 
     public String getType_id() {
         return type_id;
@@ -82,9 +63,7 @@ public class NewReimbursementRequest {
         return "NewReimbursementRequest{" +
                 "amount=" + amount +
                 ", description='" + description + '\'' +
-                ", receipt='" + receipt + '\'' +
                 ", payment_id='" + payment_id + '\'' +
-                ", author_id='" + author_id + '\'' +
                 ", type_id='" + type_id + '\'' +
                 '}';
     }

@@ -48,6 +48,18 @@ login request
 	"password" : "0P@ssword"
 }
 
+get unactive users
+{
+	"viewUnactivated" : true
+}
+
+
+activate user
+{
+	
+	"username" : "username",
+	"activate" : "activate"
+}
 
 
 

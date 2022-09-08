@@ -1,7 +1,6 @@
 package com.revature.reimbapi.services;
 
 import com.revature.reimbapi.daos.ERS_RoleDAO;
-import com.revature.reimbapi.utils.customexceptions.InvalidTypeException;
 import com.revature.reimbapi.utils.customexceptions.ResourceConflictException;
 
 public class ERS_RoleService {

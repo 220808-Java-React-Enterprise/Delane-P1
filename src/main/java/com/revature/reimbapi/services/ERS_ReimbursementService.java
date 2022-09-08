@@ -14,6 +14,7 @@ import com.revature.reimbapi.daos.ERS_ReimbursementDAO;
 import com.revature.reimbapi.dtos.requests.NewReimbursementRequest;
 import com.revature.reimbapi.dtos.requests.UpdateReimbEmployeeRequest;
 import com.revature.reimbapi.models.ERS_Reimbursement;
+import com.revature.reimbapi.utils.customexceptions.NotFoundException;
 import com.revature.reimbapi.utils.customexceptions.PlaceHolderException;
 
 import java.math.BigDecimal;
@@ -44,12 +45,12 @@ public class ERS_ReimbursementService {
         return true;
     }
 //Next TODO: change over from model type to request type.
-    public ERS_Reimbursement saveReimbursementRequest(NewReimbursementRequest reimbRequest) {
+    public ERS_Reimbursement saveReimbursementRequest(NewReimbursementRequest reimbRequest, String userId) {
         //TODO: call verify form complete
 
         try {
             //Converting request class to model class
-            ERS_Reimbursement newReimbRequest = new ERS_Reimbursement(UUID.randomUUID(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()),reimbRequest.getDescription(), reimbRequest.getPayment_id(), UUID.fromString(reimbRequest.getAuthor_id()), reimbRequest.getType_id());
+            ERS_Reimbursement newReimbRequest = new ERS_Reimbursement(UUID.randomUUID(), BigDecimal.valueOf(reimbRequest.getAmount()), Timestamp.valueOf(LocalDateTime.now()),reimbRequest.getDescription(), reimbRequest.getPayment_id(), UUID.fromString(userId), reimbRequest.getType_id());
 
             //reimbRequest.setStatus_id("PENDING_ID"); //Fill in once ids are decided.
             reimDAO.save(newReimbRequest);
@@ -66,7 +67,7 @@ public class ERS_ReimbursementService {
     public List<ERS_Reimbursement> getReimbursementByEmployee_Id(UUID id) {
 
         List<ERS_Reimbursement> list = reimDAO.getAllByAuthorId(id);
-        if(list.isEmpty()) {throw new PlaceHolderException("There are no saved reimbursements for this employee.");} //Placeholder exception.
+        if(list.isEmpty()) {throw new NotFoundException("There are no saved reimbursements for this employee.");} //Placeholder exception.
 
         return list;
     }
@@ -105,7 +106,7 @@ public class ERS_ReimbursementService {
 
         }
 
-        if(list.isEmpty()) { throw new PlaceHolderException("There are no reimbursements at this time."); } //Consider replacing with a printStatement.
+        if(list.isEmpty()) { throw new NotFoundException("There are no reimbursements at this time."); } //Consider replacing with a printStatement.
 
         return list;
 

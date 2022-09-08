@@ -1,10 +1,8 @@
 package com.revature.reimbapi.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.reimbapi.dtos.requests.GetUnactivatedRequest;
 import com.revature.reimbapi.dtos.requests.UpdateActiveRequest;
 import com.revature.reimbapi.dtos.responeses.Principal;
-import com.revature.reimbapi.models.ERS_User;
 import com.revature.reimbapi.services.ERS_UserService;
 import com.revature.reimbapi.services.TokenService;
 import com.revature.reimbapi.utils.customexceptions.AuthenticationException;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class AdminServlet extends HttpServlet {
     private final ObjectMapper objectMapper;
@@ -36,24 +33,20 @@ public class AdminServlet extends HttpServlet {
         String[] path = req.getRequestURI().split("/");
         if(path[path.length-1].equals("viewunactivated")) {
 
-            String token = req.getHeader("Authorization");
-            Principal principal = tokenService.extractRequesterDetails(token);
-
             try {
-                if (principal.getRole().equals("Admin")) {
-                    GetUnactivatedRequest getUnactivatedRequest = objectMapper.readValue(req.getInputStream(), GetUnactivatedRequest.class);
+                String token = req.getHeader("Authorization");
+                Principal principal = tokenService.extractRequesterDetails(token);
 
-                    if (getUnactivatedRequest.isViewUnactivated()) {
-                        List<ERS_User> unactivatedList = userService.getUnactivatedUsers();
-                        resp.setStatus(200);
+                if (principal.getRole().equals("Admin")) {
+
                         resp.setContentType("application/json");
-                        resp.getWriter().write(objectMapper.writeValueAsString(unactivatedList));
-                    }
+                        resp.getWriter().write(objectMapper.writeValueAsString( userService.getUnactivatedUsers() ));
+                        resp.setStatus(200);
+
                 } else {
                     throw new AuthenticationException("Admin permissions needed.");
 
                 }
-
 
             } catch (AuthenticationException e) {
                 resp.setStatus(403);
@@ -63,11 +56,14 @@ public class AdminServlet extends HttpServlet {
                 resp.setStatus(404);
                 resp.getWriter().write(objectMapper.writeValueAsString(e.getMessage()));
 
+            } catch (NullPointerException e) {
+                resp.setStatus(400);
+                resp.getWriter().write(objectMapper.writeValueAsString(e.getMessage()));
+
             } catch (Exception e) {
                 resp.setStatus(400);
 
             }
-
         }
     }
 

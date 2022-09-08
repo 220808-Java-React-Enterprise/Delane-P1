@@ -6,6 +6,7 @@ import com.revature.reimbapi.dtos.requests.LoginRequest;
 import com.revature.reimbapi.dtos.requests.NewUserRequest;
 import com.revature.reimbapi.dtos.responeses.Principal;
 import com.revature.reimbapi.models.ERS_User;
+import com.revature.reimbapi.utils.customexceptions.AuthenticationException;
 import com.revature.reimbapi.utils.customexceptions.InvalidRequestException;
 import com.revature.reimbapi.utils.customexceptions.NotFoundException;
 import com.revature.reimbapi.utils.customexceptions.ResourceConflictException;
@@ -53,6 +54,9 @@ public class ERS_UserService {
 
         String role = roleService.getRoleById(user.getRoleId());
 
+        if(!user.isActive()) { throw new AuthenticationException("This account is not active. Please wait for admin approval.");
+        }
+
         return new Principal(user.getUserId(), user.getUsername(), role);
 
     }
@@ -91,8 +95,10 @@ public class ERS_UserService {
     }
 
     public List<ERS_User> getUnactivatedUsers() {
+        List<ERS_User> userList = userDAO.getAllUnactivated();
+        if(userList.isEmpty()) {throw new NullPointerException("No users found."); }
 
-        return userDAO.getAllUnactivated();
+        return userList;
 
     }
 

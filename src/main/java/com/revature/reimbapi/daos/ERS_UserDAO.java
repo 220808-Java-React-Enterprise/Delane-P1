@@ -61,11 +61,18 @@ public class ERS_UserDAO implements CrudDAO<ERS_User>{
 
         List<ERS_User> list = new ArrayList<>();
         try(Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE is_active = false");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE is_active = ?");
+
+            ps.setBoolean(1,false);
 
             ResultSet rs = ps.executeQuery();
+
             while(rs.next()) {
-                list.add(new ERS_User(rs.getString("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id")));
+
+                ERS_User user = new ERS_User(rs.getString("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
+                System.out.println(user);
+
+                list.add(user);
 
             }
 

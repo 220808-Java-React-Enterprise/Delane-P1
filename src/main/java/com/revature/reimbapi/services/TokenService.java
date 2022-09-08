@@ -10,7 +10,11 @@ import java.util.Date;
 
 public class TokenService {
     private JwtConfig jwtConfig;
-    public TokenService() { super(); }
+
+    public TokenService() {
+        super();
+    }
+
     public TokenService(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
     }
@@ -22,25 +26,23 @@ public class TokenService {
                 .setIssuer("reimbapi")
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration()))
-                .setSubject(subject.getRole())
+                .setSubject(subject.getUsername())
+                .claim("role", subject.getRole())
                 .signWith(jwtConfig.getSigAlg(), jwtConfig.getSigningKey());
 
         return tokenBuilder.compact();
     }
 
     public Principal extractRequesterDetails(String token) {
-        try{
+        try {
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtConfig.getSigningKey())
                     .parseClaimsJws(token)
                     .getBody();
 
+            return new Principal(claims.getId(), claims.getSubject(), claims.get("role", String.class));
+        } catch (Exception e) {
             return null;
-
-        } catch(Exception e) {
-            return null;
-
         }
-
     }
 }

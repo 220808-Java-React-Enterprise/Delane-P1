@@ -9,7 +9,7 @@ public class ERS_User {
     private String givenName;
     private String surname;
     private boolean isActive = false;
-    private String roleId = "P";
+    private String roleId = "E";
 
     //Constructors
     public ERS_User() {}

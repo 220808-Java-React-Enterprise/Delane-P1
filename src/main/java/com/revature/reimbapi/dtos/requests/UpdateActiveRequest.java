@@ -4,6 +4,9 @@ public class UpdateActiveRequest {
     private String username;
     private boolean activate;
 
+    public UpdateActiveRequest() {
+    }
+
     public UpdateActiveRequest(String username, boolean activate) {
         this.username = username;
         this.activate = activate;
