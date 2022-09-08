@@ -30,6 +30,11 @@ The Reimb API is meant to be a backend implementation. This api is designed to p
 - Git
 - DBeaver 
 
+## Features
+- A new users can sign up 
+- An admin can activate or deactivate a user account.
+- An activated and authorized user can send reimbursement requests.
+- A user can view their reimbursement request history. 
 
 ###Contributor
 Delane Green
