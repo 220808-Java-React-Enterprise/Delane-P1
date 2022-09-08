@@ -25,7 +25,6 @@ public class ContextLoadListener implements ServletContextListener {
         ObjectMapper mapper = new ObjectMapper();
 
         //Second is initializing any and all servlets.
-        Test test = new Test();
         AdminServlet adminServlet = new AdminServlet(mapper, new TokenService(new JwtConfig()), new ERS_UserService(new ERS_UserDAO()));
         UserServlet userServlet = new UserServlet(mapper, new ERS_UserService(new ERS_UserDAO()));
         AuthenticationServlet authenticationServlet = new AuthenticationServlet(mapper, new TokenService(new JwtConfig()), new ERS_UserService(new ERS_UserDAO()));
@@ -36,7 +35,6 @@ public class ContextLoadListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         //Fourth is mapping the servlets?
-        context.addServlet("Test", test).addMapping("/test");
         context.addServlet("AdminServlet", adminServlet).addMapping("/admin/*");
         context.addServlet("UserServlet", userServlet).addMapping("/user/*");
         context.addServlet("AuthenticationServlet", authenticationServlet).addMapping("/user/login/auth");
