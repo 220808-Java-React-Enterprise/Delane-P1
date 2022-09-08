@@ -9,6 +9,7 @@ import com.revature.reimbapi.services.TokenService;
 import com.revature.reimbapi.servlets.AuthenticationServlet;
 import com.revature.reimbapi.servlets.EmployeeReimbursementsServlet;
 import com.revature.reimbapi.servlets.ReimbursementServlet;
+import com.revature.reimbapi.servlets.UserServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -25,6 +26,7 @@ public class ContextLoadListener implements ServletContextListener {
         ObjectMapper mapper = new ObjectMapper();
 
         //Second is initializing any and all servlets.
+        UserServlet userServlet = new UserServlet(mapper, new ERS_UserService(new ERS_UserDAO()));
         AuthenticationServlet authenticationServlet = new AuthenticationServlet(mapper, new TokenService(new JwtConfig()), new ERS_UserService(new ERS_UserDAO()));
         ReimbursementServlet reimbursementServlet = new ReimbursementServlet(mapper, new ERS_ReimbursementService(new ERS_ReimbursementDAO()));
         EmployeeReimbursementsServlet employeeReimbursementsServlet = new EmployeeReimbursementsServlet(mapper, new ERS_ReimbursementService(new ERS_ReimbursementDAO()));
@@ -33,13 +35,14 @@ public class ContextLoadListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         //Fourth is mapping the servlets?
+        context.addServlet("UserServlet", userServlet).addMapping("/user/*");
         context.addServlet("AuthenticationServlet", authenticationServlet).addMapping("/user/login/auth");
         context.addServlet("EmployeeReimbursementServlet", employeeReimbursementsServlet).addMapping("/empreimb/*");
         context.addServlet("ReimbursementServlet", reimbursementServlet).addMapping("/postreimbrequest"); //temp for testing
 
 
         //Leaving this to see what it does.
-        //ServletContextListener.super.contextInitialized(sce);
+        ServletContextListener.super.contextInitialized(sce);
     }
 
     @Override   //This destroys the program on every exit?
@@ -48,6 +51,6 @@ public class ContextLoadListener implements ServletContextListener {
         System.out.println("Shutingdown the application... Thank you for using Reimbursement Api.");
 
         //Leaving this to see what it does.
-        //ServletContextListener.super.contextDestroyed(sce);
+        ServletContextListener.super.contextDestroyed(sce);
     }
 }

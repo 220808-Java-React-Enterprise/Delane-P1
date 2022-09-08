@@ -27,6 +27,7 @@ public class ERS_UserService {
         if(!isUsernameAvailable(newUserRequest.getUsername())) {throw new ResourceConflictException("Username is already taken.");}
         if(!isValidPassword(newUserRequest.getPassword())) {throw new InvalidRequestException("Password must be at least 8 characters long and contain, upper and lower case letters, numbers, and special characters.");}
         if(!isValidEmail(newUserRequest.getEmail())) {throw new InvalidRequestException("Invalid email address.");}
+        if(!isEmailAvailable(newUserRequest.getEmail())) {throw new ResourceConflictException("Email is already taken.");}
         if(!isValidGivenName(newUserRequest.getGivenName())) {throw new InvalidRequestException("First name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
         if(!isValidSurname(newUserRequest.getSurname())) {throw new InvalidRequestException("Last name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
 
@@ -34,7 +35,7 @@ public class ERS_UserService {
 
         try{
             userDAO.save(newUser);
-            return new Principal(newUser.getUserId(), newUser.getUsername(), "Pending approval");
+            return new Principal(newUser.getUserId(), newUser.getUsername(), "Employee");
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -58,15 +59,20 @@ public class ERS_UserService {
 
 
     public boolean isValidUsername(String username) {
-        return username.matches("^[a-z0-9_-]{3,15}$");
+        return username.matches("^[a-zA-Z0-9_-]{3,15}$");
     }
 
     public boolean isUsernameAvailable(String username) {
 
-        return !userDAO.doesUserExist(username);
+        return !userDAO.doesUserExistUsername(username);
 
     }
 
+    public boolean isEmailAvailable(String email) {
+
+        return !userDAO.doesUserExistEmail(email);
+
+    }
 
     public boolean isValidPassword(String password) {
         return password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
@@ -77,11 +83,11 @@ public class ERS_UserService {
     }
 
     public boolean isValidGivenName(String givenName) {
-        return givenName.matches("^[a-z-]{3,20}$");
+        return givenName.matches("^[a-zA-Z]{3,20}$");
     }
 
     public boolean isValidSurname(String surname) {
-        return surname.matches("^[a-z-]{3,20}$");
+        return surname.matches("^[a-zA-Z]{3,20}$");
     }
 
     public List<ERS_User> getUnactivatedUsers() {

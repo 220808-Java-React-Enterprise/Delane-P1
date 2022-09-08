@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ERS_UserDAO implements CrudDAO<ERS_User>{
     @Override
@@ -18,8 +17,8 @@ public class ERS_UserDAO implements CrudDAO<ERS_User>{
             PreparedStatement ps = con.prepareStatement("INSERT INTO ers_users (user_id, username, email, password, given_name, surname, is_active, role_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )");
             ps.setString(1, user.getUserId());
             ps.setString(2, user.getUsername());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getEmail());
             ps.setString(5, user.getGivenName());
             ps.setString(6, user.getSurname());
             ps.setBoolean(7, user.isActive());
@@ -82,7 +81,7 @@ public class ERS_UserDAO implements CrudDAO<ERS_User>{
 
     public ERS_User getUserByUsernameAndPassword(String username, String password) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE user_id = ? AND password = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE username = ? AND password = ?");
 
             ps.setString(1, username);
             ps.setString(2, password);
@@ -121,10 +120,29 @@ public class ERS_UserDAO implements CrudDAO<ERS_User>{
     }
 
 
-    public boolean doesUserExist(String username) {
+    public boolean doesUserExistUsername(String username) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE username = ?");
             ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) { return true; }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+
+    public boolean doesUserExistEmail(String email) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users WHERE email = ?");
+            ps.setString(1, email);
 
             ResultSet rs = ps.executeQuery();
 

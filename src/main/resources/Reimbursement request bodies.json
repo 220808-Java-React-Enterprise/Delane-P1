@@ -31,3 +31,23 @@
 	"order" : true
 }
 
+new user
+{
+	"username" : "username",
+	"email" : "email",
+	"password" : "password",
+	"password2" : "password2",
+	"givenName" : "givenName",
+	"surname" : "surname"
+}
+
+
+login request
+{
+	"username" : "Admin",
+	"password" : "0P@ssword"
+}
+
+
+
+

@@ -19,7 +19,7 @@ public class TokenService {
         long now = System.currentTimeMillis();
         JwtBuilder tokenBuilder = Jwts.builder()
                 .setId(subject.getUserId())
-                .setIssuer("reimbursmentapi")
+                .setIssuer("reimbapi")
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration()))
                 .setSubject(subject.getRole())
@@ -35,7 +35,7 @@ public class TokenService {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return null;//TODO: new Principal(claims.getId(), claims.get("roleId", String.class));
+            return null;
 
         } catch(Exception e) {
             return null;
