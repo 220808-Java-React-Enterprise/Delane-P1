@@ -24,13 +24,8 @@ public class ERS_UserService {
     }
 
     public Principal registerUser(NewUserRequest newUserRequest) {
-        if(!isValidUsername(newUserRequest.getUsername())) {throw new InvalidRequestException("Username must be 3-15 characters long and can use only letters, numbers, or _ and -.");}
-        if(!isUsernameAvailable(newUserRequest.getUsername())) {throw new ResourceConflictException("Username is already taken.");}
-        if(!isValidPassword(newUserRequest.getPassword())) {throw new InvalidRequestException("Password must be at least 8 characters long and contain, upper and lower case letters, numbers, and special characters.");}
-        if(!isValidEmail(newUserRequest.getEmail())) {throw new InvalidRequestException("Invalid email address.");}
-        if(!isEmailAvailable(newUserRequest.getEmail())) {throw new ResourceConflictException("Email is already taken.");}
-        if(!isValidGivenName(newUserRequest.getGivenName())) {throw new InvalidRequestException("First name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
-        if(!isValidSurname(newUserRequest.getSurname())) {throw new InvalidRequestException("Last name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
+
+        if(!isValidNewUser(newUserRequest)) { throw new InvalidRequestException("There is something wrong with the request details."); }
 
         ERS_User newUser = new ERS_User(String.valueOf(UUID.randomUUID()), newUserRequest.getUsername(), newUserRequest.getPassword(), newUserRequest.getEmail(), newUserRequest.getGivenName(), newUserRequest.getSurname(), false, "E");
 
@@ -40,13 +35,20 @@ public class ERS_UserService {
 
         } catch(Exception e) {
             e.printStackTrace();
-
         }
-
         return null;
-
     }
+    public boolean isValidNewUser(NewUserRequest newUserRequest) {
+        if(!isValidUsername(newUserRequest.getUsername())) {throw new InvalidRequestException("Username must be 3-15 characters long and can use only letters, numbers, or _ and -.");}
+        if(!isUsernameAvailable(newUserRequest.getUsername())) {throw new ResourceConflictException("Username is already taken.");}
+        if(!isValidPassword(newUserRequest.getPassword())) {throw new InvalidRequestException("Password must be at least 8 characters long and contain, upper and lower case letters, numbers, and special characters.");}
+        if(!isValidEmail(newUserRequest.getEmail())) {throw new InvalidRequestException("Invalid email address.");}
+        if(!isEmailAvailable(newUserRequest.getEmail())) {throw new ResourceConflictException("Email is already taken.");}
+        if(!isValidGivenName(newUserRequest.getGivenName())) {throw new InvalidRequestException("First name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
+        if(!isValidSurname(newUserRequest.getSurname())) {throw new InvalidRequestException("Last name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
 
+        return true;
+    }
     public Principal Login(LoginRequest loginRequest) {
         ERS_User user = userDAO.getUserByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
 
@@ -101,10 +103,8 @@ public class ERS_UserService {
         return userList;
 
     }
-
     public void ActivateUser(String username, boolean activate) {
         if(isUsernameAvailable(username)) {throw new NotFoundException("User does not exist.");}
-
         userDAO.updateActivation(username, activate);
 
     }

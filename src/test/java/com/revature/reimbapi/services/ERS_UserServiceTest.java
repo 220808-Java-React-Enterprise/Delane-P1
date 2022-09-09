@@ -1,8 +1,11 @@
 package com.revature.reimbapi.services;
 
 import com.revature.reimbapi.daos.ERS_UserDAO;
+import com.revature.reimbapi.dtos.requests.NewUserRequest;
 import com.revature.reimbapi.models.ERS_User;
+import com.revature.reimbapi.utils.customexceptions.InvalidRequestException;
 import com.revature.reimbapi.utils.customexceptions.NotFoundException;
+import com.revature.reimbapi.utils.customexceptions.ResourceConflictException;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
@@ -106,5 +109,29 @@ public class ERS_UserServiceTest {
 
     }
 
+    @Test
+    public void isValidNewUser_MockTest() {
+        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email", "Password", "Password", "Tim", "Fin");
+        
+        when(sut.isValidUsername(newUserRequest.getUsername())).thenReturn(true); 
+        when(sut.isUsernameAvailable(newUserRequest.getUsername())).thenReturn(true); 
+        when(sut.isValidPassword(newUserRequest.getPassword())).thenReturn(true); 
+        when(sut.isValidEmail(newUserRequest.getEmail())).thenReturn(true); 
+        when(sut.isEmailAvailable(newUserRequest.getEmail())).thenReturn(true); 
+        when(sut.isValidGivenName(newUserRequest.getGivenName())).thenReturn(true); 
+        when(sut.isValidSurname(newUserRequest.getSurname())).thenReturn(true);
+
+        Assert.assertTrue(sut.isValidNewUser(newUserRequest));
+
+    }
+
+    @Test
+    public void isValidNewUser() {
+        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email@email.com", "Password0@", "Password0@", "Tim", "Fin");
+
+
+        Assert.assertTrue(sut.isValidNewUser(newUserRequest));
+
+    }
 
 }
