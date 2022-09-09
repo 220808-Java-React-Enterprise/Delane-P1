@@ -13,11 +13,8 @@ public class ERS_RoleService {
     public String getRoleById(String id) {
 
         String role = roleDAO.getRoleById(id);
-
         if( role == null) { throw new ResourceConflictException("This is not a valid user role."); }
-
         return role;
-
     }
 
 }

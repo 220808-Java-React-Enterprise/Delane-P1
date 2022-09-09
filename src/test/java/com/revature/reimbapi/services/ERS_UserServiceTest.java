@@ -1,13 +1,18 @@
 package com.revature.reimbapi.services;
 
 import com.revature.reimbapi.daos.ERS_UserDAO;
+import com.revature.reimbapi.models.ERS_User;
+import com.revature.reimbapi.utils.customexceptions.NotFoundException;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
+import java.util.List;
 
-public class ERS_UserServiceTest extends TestCase {
+import static org.mockito.Mockito.*;
+
+public class ERS_UserServiceTest {
     ERS_UserService sut;
     ERS_UserDAO mockDAO = mock(ERS_UserDAO.class);
 
@@ -16,25 +21,21 @@ public class ERS_UserServiceTest extends TestCase {
         this.sut = new ERS_UserService(mockDAO);
     }
 
-    public void testRegisterUser() {
-    }
 
-    public void testLogin() {
-    }
-
+    @Test
     public void testIsValidUsername() {
         String vaildName = "Honey";
         Assert.assertTrue(sut.isValidUsername(vaildName));
     }
 
-    public void testIsUsernameAvailable() {
-    }
 
+    @Test
     public void testIsValidPassword() {
         String invalidPassword = "   A        9    *   z   ";
         Assert.assertFalse(sut.isValidPassword(invalidPassword));
     }
 
+    @Test
     public void testIsValidEmail() {
         String email = "Test@gmail.com";
 
@@ -42,19 +43,68 @@ public class ERS_UserServiceTest extends TestCase {
 
     }
 
+    @Test
     public void testIsValidGivenName() {
         String validGivenName = "George";
         Assert.assertTrue(sut.isValidGivenName(validGivenName));
     }
 
+    @Test
     public void testIsValidSurname() {
         String validSurname = "Brown";
         Assert.assertTrue(sut.isValidGivenName(validSurname));
 
     }
 
-    //public void testGetUnactivatedUsers() {}
+    @Test
+    public void testActivateUser_SpeaksToDAO() {
+        String testUsername = "Tester";
+        boolean testActivate = true;
 
-    public void testActivateUser() {
+        when(sut.isUsernameAvailable(testUsername)).thenReturn(true);
+
+        sut.ActivateUser(testUsername, testActivate);
+
+        verify(mockDAO).updateActivation(testUsername, testActivate);
+
     }
+
+    @Test (expected = NotFoundException.class)
+    public void testActivateUser_ThrowsException() {
+        String testUsername = "Tester";
+        boolean testActivate = true;
+        sut.ActivateUser(testUsername, testActivate);
+    }
+    @Test (expected = NullPointerException.class)
+    public void getUnactivatedUsers() {
+        sut.getUnactivatedUsers();
+
+    }
+
+    @Test
+    public void isValidSurname() {
+        String invalidSurname = "Jackson  OReily ";
+
+        Assert.assertFalse(sut.isValidSurname(invalidSurname));
+    }
+
+    @Test
+    public void isUsernameAvailable_SpeaksToDAO() {
+        String testUsername = "Username";
+        when(mockDAO.doesUserExistUsername(testUsername)).thenReturn(true);
+        sut.isUsernameAvailable(testUsername);
+        verify(mockDAO).doesUserExistUsername(testUsername);
+
+    }
+
+    @Test
+    public void isEmailAvailable_SpeaksToDAO() {
+        String testEmail = "Email@email.com";
+        when(mockDAO.doesUserExistEmail(testEmail)).thenReturn(true);
+        sut.isEmailAvailable(testEmail);
+        verify(mockDAO).doesUserExistEmail(testEmail);
+
+    }
+
+
 }

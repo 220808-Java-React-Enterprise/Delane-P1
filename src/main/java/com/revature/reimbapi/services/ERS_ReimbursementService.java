@@ -68,7 +68,6 @@ public class ERS_ReimbursementService {
 
         List<ERS_Reimbursement> list = reimDAO.getAllByAuthorId(id);
         if(list.isEmpty()) {throw new NotFoundException("There are no saved reimbursements for this employee.");} //Placeholder exception.
-
         return list;
     }
 
