@@ -2,6 +2,7 @@ package com.revature.reimbapi.services;
 
 import com.revature.reimbapi.daos.ERS_UserDAO;
 import com.revature.reimbapi.dtos.requests.NewUserRequest;
+import com.revature.reimbapi.dtos.responeses.Principal;
 import com.revature.reimbapi.models.ERS_User;
 import com.revature.reimbapi.utils.customexceptions.InvalidRequestException;
 import com.revature.reimbapi.utils.customexceptions.NotFoundException;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -24,6 +26,13 @@ public class ERS_UserServiceTest {
         this.sut = new ERS_UserService(mockDAO);
     }
 
+    @Test
+    public void testRegisterUser() {
+
+        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email@email.com", "Password0@", "Password0@", "Tim", "Fin");
+
+        Assert.assertNotNull(sut.registerUser(newUserRequest));
+    }
 
     @Test
     public void testIsValidUsername() {
@@ -110,27 +119,25 @@ public class ERS_UserServiceTest {
     }
 
     @Test
-    public void isValidNewUser_MockTest() {
-        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email", "Password", "Password", "Tim", "Fin");
-        
-        when(sut.isValidUsername(newUserRequest.getUsername())).thenReturn(true); 
-        when(sut.isUsernameAvailable(newUserRequest.getUsername())).thenReturn(true); 
-        when(sut.isValidPassword(newUserRequest.getPassword())).thenReturn(true); 
-        when(sut.isValidEmail(newUserRequest.getEmail())).thenReturn(true); 
-        when(sut.isEmailAvailable(newUserRequest.getEmail())).thenReturn(true); 
-        when(sut.isValidGivenName(newUserRequest.getGivenName())).thenReturn(true); 
-        when(sut.isValidSurname(newUserRequest.getSurname())).thenReturn(true);
+    public void isValidNewUser() {
+        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email@email.com", "Password0@", "Password0@", "Tim", "Fin");
 
         Assert.assertTrue(sut.isValidNewUser(newUserRequest));
 
     }
 
+
     @Test
-    public void isValidNewUser() {
-        NewUserRequest newUserRequest = new NewUserRequest("Username", "Email@email.com", "Password0@", "Password0@", "Tim", "Fin");
+    public void testIsUsernameAvailable() {
+        String testUsername = "Username";
+        Assert.assertTrue(sut.isUsernameAvailable(testUsername));
 
+    }
 
-        Assert.assertTrue(sut.isValidNewUser(newUserRequest));
+    @Test
+    public void testIsEmailAvailable() {
+        String testEmail = "Email@email.com";
+        Assert.assertTrue(sut.isEmailAvailable(testEmail));
 
     }
 

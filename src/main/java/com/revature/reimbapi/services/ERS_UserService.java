@@ -17,26 +17,14 @@ import java.util.UUID;
 public class ERS_UserService {
     private final ERS_UserDAO userDAO;
     private final ERS_RoleService roleService = new ERS_RoleService(new ERS_RoleDAO()); //move to better location.
-
     public ERS_UserService(ERS_UserDAO userDAO) {
         this.userDAO = userDAO;
-
     }
-
     public Principal registerUser(NewUserRequest newUserRequest) {
-
         if(!isValidNewUser(newUserRequest)) { throw new InvalidRequestException("There is something wrong with the request details."); }
-
         ERS_User newUser = new ERS_User(String.valueOf(UUID.randomUUID()), newUserRequest.getUsername(), newUserRequest.getPassword(), newUserRequest.getEmail(), newUserRequest.getGivenName(), newUserRequest.getSurname(), false, "E");
-
-        try{
-            userDAO.save(newUser);
-            return new Principal(newUser.getUserId(), newUser.getUsername(), "Employee");
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        userDAO.save(newUser);
+        return new Principal(newUser.getUserId(), newUser.getUsername(), "Employee");
     }
     public boolean isValidNewUser(NewUserRequest newUserRequest) {
         if(!isValidUsername(newUserRequest.getUsername())) {throw new InvalidRequestException("Username must be 3-15 characters long and can use only letters, numbers, or _ and -.");}
@@ -46,7 +34,6 @@ public class ERS_UserService {
         if(!isEmailAvailable(newUserRequest.getEmail())) {throw new ResourceConflictException("Email is already taken.");}
         if(!isValidGivenName(newUserRequest.getGivenName())) {throw new InvalidRequestException("First name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
         if(!isValidSurname(newUserRequest.getSurname())) {throw new InvalidRequestException("Last name must be 3 -20 characters long and can not contain any numbers or special symbols.");}
-
         return true;
     }
     public Principal Login(LoginRequest loginRequest) {
@@ -58,32 +45,20 @@ public class ERS_UserService {
 
         if(!user.isActive()) { throw new AuthenticationException("This account is not active. Please wait for admin approval.");
         }
-
         return new Principal(user.getUserId(), user.getUsername(), role);
-
     }
-
-
     public boolean isValidUsername(String username) {
         return username.matches("^[a-zA-Z0-9_-]{3,15}$");
     }
-
     public boolean isUsernameAvailable(String username) {
-
         return !userDAO.doesUserExistUsername(username);
-
     }
-
     public boolean isEmailAvailable(String email) {
-
         return !userDAO.doesUserExistEmail(email);
-
     }
-
     public boolean isValidPassword(String password) {
         return password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[^\\s ].{8,}$");
     }
-
     public boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9][A-Za-z0-9!#$%&'*+\\-/=?^_`{}|]{0,63}@[A-Za-z0-9.-]{1,253}.[A-Za-z]{2,24}$");
     }
@@ -99,14 +74,10 @@ public class ERS_UserService {
     public List<ERS_User> getUnactivatedUsers() {
         List<ERS_User> userList = userDAO.getAllUnactivated();
         if(userList.isEmpty()) {throw new NullPointerException("No users found."); }
-
         return userList;
-
     }
     public void ActivateUser(String username, boolean activate) {
         if(isUsernameAvailable(username)) {throw new NotFoundException("User does not exist.");}
         userDAO.updateActivation(username, activate);
-
     }
-
 }
